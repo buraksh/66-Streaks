@@ -22,7 +22,37 @@ enum CardViewStyle: String, CaseIterable {
 
 enum AppTheme {
     // MARK: - Primary Accent
-    static let accentBlue = Color(hex: "3B82F6")
+    static let accentBlue = Color(hex: "7C5CFC")
+
+    // MARK: - Brand Gradient (inspired by logo)
+    /// Warm coral → pink → violet → teal flow
+    static let brandGradientColors: [Color] = [
+        Color(hex: "F97316"),  // warm coral/orange
+        Color(hex: "EC4899"),  // hot pink
+        Color(hex: "7C5CFC"),  // violet (primary accent)
+        Color(hex: "14B8A6"),  // teal
+    ]
+
+    static var brandGradient: LinearGradient {
+        LinearGradient(
+            colors: brandGradientColors,
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    /// Subtle brand gradient for CTA buttons (less intense, more sophisticated)
+    static var ctaGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                Color(hex: "8B5CF6"),  // warm violet
+                Color(hex: "7C5CFC"),  // primary
+                Color(hex: "6D5CFA"),  // slightly cooler violet
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
 
     // MARK: - Success State
     static let successGreen = Color(hex: "10B981")
@@ -31,9 +61,9 @@ enum AppTheme {
     static let dangerRed = Color(hex: "EF4444")
 
     // MARK: - Grid Colors
-    static let gridFilledLight = Color(hex: "3B82F6")
+    static let gridFilledLight = Color(hex: "7C5CFC")
     static let gridEmptyLight = Color(hex: "EEF1F5")
-    static let gridFilledDark = Color(hex: "3B82F6")
+    static let gridFilledDark = Color(hex: "7C5CFC")
     static let gridEmptyDark = Color(hex: "2C2C2E")
 
     // MARK: - Dark Mode

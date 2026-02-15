@@ -7,6 +7,7 @@ struct HabitCardView: View {
     @Environment(\.colorScheme) private var colorScheme
     @AppStorage("cardViewStyle") private var cardViewStyle = "progressBar"
     @State private var animateCheckIn = false
+    @State private var dayPulse = false
 
     private let checkIconSize: CGFloat = 36
 
@@ -68,9 +69,19 @@ struct HabitCardView: View {
                     .foregroundColor(colors.textPrimary)
                     .lineLimit(1)
 
-                Text("Round \(habit.chapter) · \(habit.progressPercentage)%")
-                    .font(.system(size: 13))
-                    .foregroundColor(colors.textSecondary)
+                HStack(spacing: 0) {
+                    Text("Day ")
+                        .font(.system(size: 13))
+                        .foregroundColor(colors.textSecondary)
+                    Text("\(habit.currentStreak)")
+                        .font(.system(size: 13, weight: dayPulse ? .bold : .regular))
+                        .foregroundColor(dayPulse ? habit.habitColor : colors.textSecondary)
+                        .scaleEffect(dayPulse ? 1.4 : 1.0)
+                        .animation(.spring(response: 0.35, dampingFraction: 0.5), value: dayPulse)
+                    Text(" · \(habit.progressPercentage)%")
+                        .font(.system(size: 13))
+                        .foregroundColor(colors.textSecondary)
+                }
             }
 
             Spacer()
@@ -150,10 +161,16 @@ struct HabitCardView: View {
         impactFeedback.impactOccurred()
         withAnimation {
             animateCheckIn = true
+            dayPulse = true
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             withAnimation {
                 animateCheckIn = false
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            withAnimation {
+                dayPulse = false
             }
         }
     }

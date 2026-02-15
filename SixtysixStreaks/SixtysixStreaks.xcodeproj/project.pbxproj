@@ -30,6 +30,7 @@
 		3BF17D67ECE13CEDFB4929D3 /* StreakGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakGridView.swift; sourceTree = "<group>"; };
 		401CEA19CCB0CDFEDF34F996 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		657D569260A42E9B5C7B91B7 /* SixtysixStreaks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SixtysixStreaks.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6727A9172F420E23006AE37C /* SixtysixStreaks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SixtysixStreaks.entitlements; sourceTree = "<group>"; };
 		806A8A42DEA57F4ECECBF3B1 /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
 		85D610BC055527A25FCC9935 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A11A0DC07485529D35C279C8 /* StreakDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakDetailView.swift; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 		B263BECBE871836B6A85D5B7 /* SixtysixStreaks */ = {
 			isa = PBXGroup;
 			children = (
+				6727A9172F420E23006AE37C /* SixtysixStreaks.entitlements */,
 				1EDDFCF7AB4BB07471A4E627 /* Assets.xcassets */,
 				C71D3EAC16A5B5AE7E8D1000 /* App */,
 				C302F54BF0E5CC6E4CBE8EAE /* Managers */,
@@ -272,6 +274,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SixtysixStreaks/SixtysixStreaks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56YC665674;
@@ -302,6 +305,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SixtysixStreaks/SixtysixStreaks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56YC665674;

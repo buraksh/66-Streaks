@@ -59,21 +59,34 @@ struct CreateHabitView: View {
             ZStack {
                 colors.background.ignoresSafeArea()
 
-                ScrollView {
-                    VStack(spacing: 28) {
-                        titleSection
-                        iconSection
-                        colorPickerSection
-                        reminderSection
-                        checkInWindowSection
-                        motivationToggle
-                        createButton
+                VStack(spacing: 0) {
+                    ScrollView {
+                        VStack(spacing: 28) {
+                            titleSection
+                            iconSection
+                            colorPickerSection
+                            reminderSection
+                            checkInWindowSection
+                            motivationToggle
+                        }
+                        .padding(24)
+                        .padding(.bottom, 16)
                     }
-                    .padding(24)
+
+                    // Sticky CTA — always visible
+                    VStack(spacing: 0) {
+                        Divider()
+                            .opacity(0.3)
+                        createButton
+                            .padding(.horizontal, 24)
+                            .padding(.top, 12)
+                            .padding(.bottom, 16)
+                    }
+                    .background(colors.background)
                 }
             }
             .navigationTitle(isEditing ? "Edit Streak" : (isOnboarding ? "Your First Streak" : "New Streak"))
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if !isOnboarding || isEditing {
                     ToolbarItem(placement: .topBarLeading) {
@@ -353,7 +366,6 @@ struct CreateHabitView: View {
                 .cornerRadius(16)
         }
         .disabled(!canCreate)
-        .padding(.top, 8)
     }
 
     // MARK: - Actions
