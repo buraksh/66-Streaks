@@ -104,64 +104,66 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
         center.add(request)
     }
 
-    private let emergencyMessages = [
-        "🔥 The flame is flickering! Check in now to keep your %d-day streak alive.",
-        "⚠️ Emergency: Your %d-day streak is about to go cold. Don't let it die!",
-        "Don't extinguish the fire. You've burned bright for %d days. Keep it going!",
-        "3 hours left to save your streak! ⏳ Day %d counts on you.",
-        "It only takes one spark. ✨ Check in now to secure day %d.",
-        "You're on fire! 🔥 Don't let today be the day it goes out. (%d days)",
-        "Protect the flame. 🛡️ Your %d-day streak is at risk. Act now!",
-        "It takes 66 days to forge a fire. You're at day %d. Don't stop now.",
-        "Warning: Streak extinguishing soon. 🧯 Save your %d days of progress!",
-        "The chain is %d links strong. Don't break it tonight. ⛓️🔥"
+    // Old individual messages removed
+
+
+    private let consolidatedEmergencyMessages = [
+        "🔥 The flame is flickering! Complete %d habits to keep it alive.",
+        "⚠️ Emergency: %d habits are still pending. Don't let them go cold!",
+        "Don't extinguish the fire. You have %d habits left today.",
+        "3 hours left! ⏳ Finish your %d habits to save your streaks.",
+        "It only takes one spark. ✨ %d habits are waiting for you.",
+        "You're on fire! 🔥 Don't let %d habits break your chain.",
+        "Protect the flame. 🛡️ %d habits need your attention now!",
+        "Keep the fire burning. 🔥 %d habits remaining for today.",
+        "Warning: Streaks at risk. 🧯 Complete %d habits to save them!",
+        "The chain is strong. 💪 Don't let %d habits break it tonight."
     ]
 
-    func scheduleEmergencyReminder(for habit: Habit) {
+    func scheduleConsolidatedEmergencyReminder(activeHabits: [Habit]) {
         let center = UNUserNotificationCenter.current()
-        let emergencyId = "emergency-\(habit.id.uuidString)"
+        let emergencyId = "emergency-daily-summary"
         
-        center.removePendingNotificationRequests(withIdentifiers: [emergencyId])
-
-        let content = UNMutableNotificationContent()
-        content.title = "⚠️ Streak Risk: \(habit.title)"
-        
-        let dayCount = habit.currentStreak + 1
-        // If streak is 0, we can just say "Start your streak" or use a generic one, 
-        // but for simplicity we'll format with dayCount (Day 1).
-        let template = emergencyMessages.randomElement() ?? "You haven't checked in yet. Keep your streak alive!"
-        content.body = String(format: template, dayCount)
-        
-        content.sound = .default
-
-        let trigger: UNNotificationTrigger
-        
-        if habit.isCompletedToday {
-            // If already done today, schedule a ONE-TIME reminder for TOMORROW at 9 PM.
-            // This ensures we skip today (no annoyance) but catch them if they forget tomorrow.
-            // If they interact with tomorrow's alert, the app opens and reschedules a repeating one.
-            guard let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) else { return }
-            var components = Calendar.current.dateComponents([.year, .month, .day], from: tomorrow)
-            components.hour = 21
-            components.minute = 0
-            
-            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        } else {
-            // If not done today (or unchecked), schedule REPEATING daily at 9 PM.
-            var components = DateComponents()
-            components.hour = 21
-            components.minute = 0
-            
-            trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        // 1. Filter for habits that are ACTIVE and NOT completed today
+        let incompleteHabits = activeHabits.filter { habit in
+            habit.habitStatus == .active && !habit.isCompletedToday
         }
         
+        // 2. If no incomplete habits, cancel the emergency reminder and return
+        if incompleteHabits.isEmpty {
+            center.removePendingNotificationRequests(withIdentifiers: [emergencyId])
+            return
+        }
+        
+        // 3. Prepare the notification logic
+        
+        let content = UNMutableNotificationContent()
+        content.title = "⚠️ Streak Risk"
+        content.sound = .default
+        
+        let count = incompleteHabits.count
+        
+        // Dynamic body based on count
+        if count == 1 {
+            // Personalize for single habit
+            let habit = incompleteHabits.first!
+            let template = "🔥 Don't let %@ go cold! Check in now to save your %d-day streak."
+            content.body = String(format: template, habit.title, habit.currentStreak + 1)
+        } else {
+            // Generalize for multiple
+            let template = consolidatedEmergencyMessages.randomElement() ?? "🔥 %d habits left! Keep your streaks burning."
+            content.body = String(format: template, count)
+        }
+        
+        // Trigger: 9:00 PM
+        var components = DateComponents()
+        components.hour = 21 // 9 PM
+        components.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(identifier: emergencyId, content: content, trigger: trigger)
+        
         center.add(request)
-    }
-
-    func cancelEmergencyReminder(for habit: Habit) {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: ["emergency-\(habit.id.uuidString)"])
     }
 
     func cancelNotifications(for habit: Habit) {
@@ -170,7 +172,7 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
         var ids = [
             "reminder-\(habit.id.uuidString)", // Legacy single ID
             "motivation-\(habit.id.uuidString)",
-            "emergency-\(habit.id.uuidString)"
+            "emergency-\(habit.id.uuidString)" // Cleanup old per-habit emergency IDs
         ]
         
         // Add all current reminder sub-IDs
@@ -182,10 +184,14 @@ final class NotificationManager: NSObject, ObservableObject, UNUserNotificationC
     }
 
     func rescheduleAll(habits: [Habit]) {
-        for habit in habits where habit.habitStatus == .active {
+        let activeHabits = habits.filter { $0.habitStatus == .active }
+        
+        for habit in activeHabits {
             scheduleReminder(for: habit)
             scheduleMorningMotivation(for: habit)
-            scheduleEmergencyReminder(for: habit)
         }
+        
+        // Schedule the single consolidated emergency reminder
+        scheduleConsolidatedEmergencyReminder(activeHabits: activeHabits)
     }
 }

@@ -131,8 +131,6 @@ final class Habit {
         if currentStreak >= 66 {
             habitStatus = .completed
         }
-        
-        NotificationManager.shared.scheduleEmergencyReminder(for: self)
     }
 
     func undoCheckIn() {
@@ -151,8 +149,6 @@ final class Habit {
         if habitStatus == .completed {
             habitStatus = .active
         }
-        
-        NotificationManager.shared.scheduleEmergencyReminder(for: self)
     }
 
     func validateStreak() {

@@ -4,8 +4,9 @@ import SwiftData
 struct StreakDetailView: View {
     @Bindable var habit: Habit
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) private var dismiss
+    @Query private var allHabits: [Habit]
 
     @State private var showResetConfirmation = false
     @State private var showDeleteConfirmation = false
@@ -15,7 +16,14 @@ struct StreakDetailView: View {
         AdaptiveColors(colorScheme: colorScheme)
     }
     
+    // ... (rest of body until Delete action) ...
+
+
+
+    // ... (rest of view) ...
+    
     // Grid columns for the main layout
+
     private let gridColumns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -235,6 +243,10 @@ struct StreakDetailView: View {
         default:
             return "Habit formed!"
         }
+    }
+    
+    private func triggerNotificationRefresh() {
+        NotificationManager.shared.scheduleConsolidatedEmergencyReminder(activeHabits: allHabits)
     }
 }
 
