@@ -20,8 +20,6 @@ final class Habit {
     var currentStreak: Int
     var lastCheckInDate: Date?
     var reminderTime: Date
-    var checkInWindowStart: Int // hour (0-23)
-    var checkInWindowEnd: Int   // hour (0-23)
     var morningMotivationEnabled: Bool
     var status: String // "active", "broken", "completed"
     var completedDates: [Date]
@@ -45,8 +43,6 @@ final class Habit {
         self.currentStreak = 0
         self.lastCheckInDate = nil
         self.reminderTime = reminderTime
-        self.checkInWindowStart = checkInWindowStart
-        self.checkInWindowEnd = checkInWindowEnd
         self.morningMotivationEnabled = morningMotivationEnabled
         self.status = HabitStatus.active.rawValue
         self.completedDates = []
@@ -135,8 +131,5 @@ final class Habit {
         habitStatus = .active
     }
 
-    var isWithinCheckInWindow: Bool {
-        let hour = Calendar.current.component(.hour, from: Date())
-        return hour >= checkInWindowStart && hour < checkInWindowEnd
-    }
+
 }

@@ -120,7 +120,7 @@ struct HabitCardView: View {
                     habit.undoCheckIn()
                     NotificationManager.shared.scheduleReminder(for: habit)
                     triggerAnimation()
-                } else if habit.isWithinCheckInWindow {
+                } else {
                     habit.checkIn()
                     NotificationManager.shared.scheduleReminder(for: habit)
                     triggerAnimation()

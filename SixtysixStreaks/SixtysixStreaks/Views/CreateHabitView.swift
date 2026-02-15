@@ -15,8 +15,6 @@ struct CreateHabitView: View {
     @State private var selectedIcon = "flame.fill"
     @State private var selectedColorHex = "10B981"
     @State private var reminderTime = Calendar.current.date(from: DateComponents(hour: 9, minute: 0)) ?? Date()
-    @State private var checkInWindowStart = 6
-    @State private var checkInWindowEnd = 23
     @State private var morningMotivationEnabled = false
     @State private var showIconPicker = false
 
@@ -48,8 +46,6 @@ struct CreateHabitView: View {
             _selectedIcon = State(initialValue: habit.iconName)
             _selectedColorHex = State(initialValue: habit.colorHex)
             _reminderTime = State(initialValue: habit.reminderTime)
-            _checkInWindowStart = State(initialValue: habit.checkInWindowStart)
-            _checkInWindowEnd = State(initialValue: habit.checkInWindowEnd)
             _morningMotivationEnabled = State(initialValue: habit.morningMotivationEnabled)
         }
     }
@@ -66,7 +62,6 @@ struct CreateHabitView: View {
                             iconSection
                             colorPickerSection
                             reminderSection
-                            checkInWindowSection
                             motivationToggle
                         }
                         .padding(24)
@@ -276,48 +271,7 @@ struct CreateHabitView: View {
         }
     }
 
-    // MARK: - Check-in Window
-    private var checkInWindowSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("CHECK-IN WINDOW")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
-                .tracking(1)
 
-            VStack(spacing: 16) {
-                HStack {
-                    Text("Start")
-                        .foregroundColor(colors.textPrimary)
-                    Spacer()
-                    Picker("", selection: $checkInWindowStart) {
-                        ForEach(0..<24, id: \.self) { hour in
-                            Text(formatHour(hour)).tag(hour)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .tint(AppTheme.accentBlue)
-                }
-
-                Divider()
-
-                HStack {
-                    Text("End")
-                        .foregroundColor(colors.textPrimary)
-                    Spacer()
-                    Picker("", selection: $checkInWindowEnd) {
-                        ForEach(0..<24, id: \.self) { hour in
-                            Text(formatHour(hour)).tag(hour)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .tint(AppTheme.accentBlue)
-                }
-            }
-            .padding(16)
-            .background(colors.card)
-            .cornerRadius(14)
-        }
-    }
 
     // MARK: - Morning Motivation
     private var motivationToggle: some View {
@@ -378,8 +332,6 @@ struct CreateHabitView: View {
         habit.iconName = selectedIcon
         habit.colorHex = selectedColorHex
         habit.reminderTime = reminderTime
-        habit.checkInWindowStart = checkInWindowStart
-        habit.checkInWindowEnd = checkInWindowEnd
         habit.morningMotivationEnabled = morningMotivationEnabled
 
         NotificationManager.shared.cancelNotifications(for: habit)
@@ -401,8 +353,6 @@ struct CreateHabitView: View {
             iconName: selectedIcon,
             colorHex: selectedColorHex,
             reminderTime: reminderTime,
-            checkInWindowStart: checkInWindowStart,
-            checkInWindowEnd: checkInWindowEnd,
             morningMotivationEnabled: morningMotivationEnabled
         )
 
@@ -422,12 +372,7 @@ struct CreateHabitView: View {
         }
     }
 
-    private func formatHour(_ hour: Int) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h a"
-        let date = Calendar.current.date(from: DateComponents(hour: hour)) ?? Date()
-        return formatter.string(from: date)
-    }
+
 }
 
 #Preview {
