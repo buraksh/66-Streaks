@@ -114,9 +114,23 @@ enum AppTheme {
             "sportscourt.fill",
             "trophy.fill",
             "medal.fill",
+            // New
+            "soccerball",
+            "basketball.fill",
+            "tennis.racket",
+            "volleyball.fill",
+            "skateboard.fill",
+            "surfboard.fill",
+            "sailboat.fill",
+            "figure.climbing",
+            "figure.cooldown",
+            "figure.core.training",
+            "figure.dance",
+            "figure.strengthtraining.traditional"
         ]),
         IconCategory(name: "Health & Wellness", icons: [
             "heart.fill",
+            "heart.text.square.fill",
             "drop.fill",
             "leaf.fill",
             "moon.fill",
@@ -126,6 +140,13 @@ enum AppTheme {
             "lungs.fill",
             "brain.head.profile",
             "eye.fill",
+            // New
+            "bandage.fill",
+            "syringe.fill",
+            "facemask.fill",
+            "staroflife.fill",
+            "ear.fill",
+            "hand.raised.fill"
         ]),
         IconCategory(name: "Food & Drink", icons: [
             "fork.knife",
@@ -133,6 +154,13 @@ enum AppTheme {
             "mug.fill",
             "carrot.fill",
             "takeoutbag.and.cup.and.straw.fill",
+            // New
+            "waterbottle.fill",
+            "wineglass.fill",
+            "birthday.cake.fill",
+            "fish.fill",
+            "popcorn.fill",
+            "frying.pan.fill"
         ]),
         IconCategory(name: "Learning & Focus", icons: [
             "book.fill",
@@ -144,6 +172,13 @@ enum AppTheme {
             "puzzlepiece.fill",
             "globe",
             "character.book.closed.fill",
+            // New
+            "bookmark.fill",
+            "doc.text.magnifyingglass",
+            "eyeglasses",
+            "ruler.fill",
+            "backpack.fill",
+            "paperclip"
         ]),
         IconCategory(name: "Creative", icons: [
             "music.note",
@@ -154,6 +189,13 @@ enum AppTheme {
             "pianokeys",
             "theatermasks.fill",
             "film.fill",
+            // New
+            "gamecontroller.fill",
+            "headphones",
+            "paintpalette.fill",
+            "scissors",
+            "swatchpalette.fill",
+            "photo.artframe"
         ]),
         IconCategory(name: "Productivity", icons: [
             "chevron.left.forwardslash.chevron.right",
@@ -166,6 +208,13 @@ enum AppTheme {
             "folder.fill",
             "briefcase.fill",
             "chart.line.uptrend.xyaxis",
+            // New
+            "paperplane.fill",
+            "tray.fill",
+            "archivebox.fill",
+            "printer.fill",
+            "externaldrive.fill",
+            "server.rack"
         ]),
         IconCategory(name: "Lifestyle", icons: [
             "sunrise.fill",
@@ -180,6 +229,16 @@ enum AppTheme {
             "car.fill",
             "airplane",
             "dollarsign.circle.fill",
+            // New
+            "cart.fill",
+            "creditcard.fill",
+            "bag.fill",
+            "suitcase.fill",
+            "tent.fill",
+            "tree.fill",
+            "pawprint.fill",
+            "tshirt.fill",
+            "ticket.fill"
         ]),
         IconCategory(name: "Social & Communication", icons: [
             "person.2.fill",
@@ -188,6 +247,13 @@ enum AppTheme {
             "envelope.fill",
             "hand.thumbsup.fill",
             "hands.sparkles.fill",
+            // New
+            "person.3.fill",
+            "person.crop.circle.fill",
+            "shared.with.you",
+            "message.fill",
+            "video.fill",
+            "mic.circle.fill"
         ]),
     ]
 }

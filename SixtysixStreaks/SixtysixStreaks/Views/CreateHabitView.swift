@@ -359,6 +359,7 @@ struct CreateHabitView: View {
         NotificationManager.shared.cancelNotifications(for: habit)
         NotificationManager.shared.scheduleReminder(for: habit)
         NotificationManager.shared.scheduleMorningMotivation(for: habit)
+        NotificationManager.shared.scheduleEmergencyReminder(for: habit)
 
         let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
         impactFeedback.impactOccurred()
@@ -384,6 +385,7 @@ struct CreateHabitView: View {
         NotificationManager.shared.requestPermission()
         NotificationManager.shared.scheduleReminder(for: habit)
         NotificationManager.shared.scheduleMorningMotivation(for: habit)
+        NotificationManager.shared.scheduleEmergencyReminder(for: habit)
 
         let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
         impactFeedback.impactOccurred()

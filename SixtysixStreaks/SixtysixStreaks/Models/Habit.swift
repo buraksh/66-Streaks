@@ -8,6 +8,12 @@ enum HabitStatus: String, Codable {
     case completed
 }
 
+struct Reminder: Codable, Identifiable, Hashable {
+    var id = UUID()
+    var time: Date
+    var isEnabled: Bool
+}
+
 @Model
 final class Habit {
     var id: UUID
@@ -19,8 +25,10 @@ final class Habit {
     var startDate: Date
     var currentStreak: Int
     var lastCheckInDate: Date?
-    var reminderTime: Date
-    var reminderEnabled: Bool = true
+    
+    // Future-proof: Support multiple reminders
+    var reminders: [Reminder] = []
+    
     var morningMotivationEnabled: Bool
     var status: String // "active", "broken", "completed"
     var completedDates: [Date]
@@ -44,14 +52,45 @@ final class Habit {
         self.startDate = Calendar.current.startOfDay(for: Date())
         self.currentStreak = 0
         self.lastCheckInDate = nil
-        self.reminderTime = reminderTime
-        self.reminderEnabled = reminderEnabled
+        
+        // Initialize with single reminder
+        self.reminders = [Reminder(time: reminderTime, isEnabled: reminderEnabled)]
+        
         self.morningMotivationEnabled = morningMotivationEnabled
         self.status = HabitStatus.active.rawValue
         self.completedDates = []
     }
 
     // MARK: - Computed Properties
+    
+    // Backward compatibility for single-reminder UI
+    var reminderTime: Date {
+        get {
+            if reminders.isEmpty { return Date() }
+            return reminders[0].time
+        }
+        set {
+            if reminders.isEmpty {
+                reminders.append(Reminder(time: newValue, isEnabled: true))
+            } else {
+                reminders[0].time = newValue
+            }
+        }
+    }
+    
+    var reminderEnabled: Bool {
+        get {
+            if reminders.isEmpty { return false }
+            return reminders[0].isEnabled
+        }
+        set {
+            if reminders.isEmpty {
+                reminders.append(Reminder(time: Date(), isEnabled: newValue))
+            } else {
+                reminders[0].isEnabled = newValue
+            }
+        }
+    }
 
     var habitColor: Color {
         Color(hex: colorHex)
@@ -92,6 +131,8 @@ final class Habit {
         if currentStreak >= 66 {
             habitStatus = .completed
         }
+        
+        NotificationManager.shared.scheduleEmergencyReminder(for: self)
     }
 
     func undoCheckIn() {
@@ -110,6 +151,8 @@ final class Habit {
         if habitStatus == .completed {
             habitStatus = .active
         }
+        
+        NotificationManager.shared.scheduleEmergencyReminder(for: self)
     }
 
     func validateStreak() {
