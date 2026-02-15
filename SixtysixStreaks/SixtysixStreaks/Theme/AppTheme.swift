@@ -79,18 +79,18 @@ enum AppTheme {
     // MARK: - Preset Color Palette
     /// Soft colors that look great on both light and dark backgrounds
     static let presetColors: [(name: String, hex: String)] = [
-        ("Green",   "10B981"),
-        ("Blue",    "3B82F6"),
-        ("Purple",  "8B5CF6"),
-        ("Orange",  "F59E0B"),
-        ("Red",     "EF4444"),
-        ("Teal",    "14B8A6"),
-        ("Pink",    "EC4899"),
-        ("Indigo",  "6366F1"),
-        ("Cyan",    "06B6D4"),
-        ("Amber",   "F97316"),
-        ("Rose",    "F43F5E"),
-        ("Lime",    "84CC16"),
+        ("Red",     "EF4444"),  // Red
+        ("Rose",    "F43F5E"),  // Red-Pink
+        ("Orange",  "F59E0B"),  // Orange
+        ("Amber",   "F97316"),  // Yellow-Orange
+        ("Lime",    "84CC16"),  // Yellow-Green
+        ("Green",   "10B981"),  // Green
+        ("Teal",    "14B8A6"),  // Blue-Green
+        ("Cyan",    "06B6D4"),  // Light Blue
+        ("Blue",    "3B82F6"),  // Blue
+        ("Indigo",  "6366F1"),  // Indigo
+        ("Purple",  "8B5CF6"),  // Violet
+        ("Pink",    "EC4899"),  // Pink
     ]
 
     // MARK: - Categorized SF Symbol Icons

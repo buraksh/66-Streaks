@@ -41,7 +41,7 @@ struct SettingsView: View {
                     Section {
                         homeLayoutPicker
                     } header: {
-                        Text("Home Layout")
+                        Text("Streak View")
                     }
 
                     Section {

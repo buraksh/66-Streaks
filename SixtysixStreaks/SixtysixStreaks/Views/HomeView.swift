@@ -84,11 +84,15 @@ struct HomeView: View {
                     showCreateHabit = true
                 } label: {
                     Image(systemName: "plus")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(colors.textSecondary)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 32, height: 32)
+                        .background(AppTheme.ctaGradient)
+                        .clipShape(Circle())
+                        .shadow(color: AppTheme.accentBlue.opacity(0.3), radius: 8, x: 0, y: 4)
                 }
             } else {
-                Color.clear.frame(width: 18, height: 18)
+                Color.clear.frame(width: 32, height: 32)
             }
         }
         .padding(.horizontal, 20)
