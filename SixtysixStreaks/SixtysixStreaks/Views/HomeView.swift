@@ -30,9 +30,16 @@ struct HomeView: View {
                     VStack(spacing: 0) {
                         LazyVStack(spacing: 12) {
                             ForEach(habits) { habit in
-                                HabitCardView(habit: habit) {
-                                    selectedHabit = habit
-                                }
+                                HabitCardView(
+                                    habit: habit,
+                                    onCardTapped: {
+                                        selectedHabit = habit
+                                    },
+                                    onCheckInChange: {
+                                        // Refresh consolidated reminder immediately
+                                        NotificationManager.shared.scheduleConsolidatedEmergencyReminder(activeHabits: habits)
+                                    }
+                                )
                             }
                         }
                         .padding(.horizontal, 16)

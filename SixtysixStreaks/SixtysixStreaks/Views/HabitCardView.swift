@@ -4,6 +4,7 @@ import SwiftData
 struct HabitCardView: View {
     @Bindable var habit: Habit
     var onCardTapped: (() -> Void)? = nil
+    var onCheckInChange: (() -> Void)? = nil
     @Environment(\.colorScheme) private var colorScheme
     @AppStorage("cardViewStyle") private var cardViewStyle = "progressBar"
     @State private var animateCheckIn = false
@@ -120,10 +121,12 @@ struct HabitCardView: View {
                     habit.undoCheckIn()
                     NotificationManager.shared.scheduleReminder(for: habit)
                     triggerAnimation()
+                    onCheckInChange?()
                 } else {
                     habit.checkIn()
                     NotificationManager.shared.scheduleReminder(for: habit)
                     triggerAnimation()
+                    onCheckInChange?()
                 }
             }
     }
