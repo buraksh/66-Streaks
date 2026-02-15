@@ -6,6 +6,11 @@ struct SixtyixStreaksApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("appThemeMode") private var appThemeMode = "system"
 
+    init() {
+        // Initialize NotificationManager to set the delegate
+        _ = NotificationManager.shared
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView(hasCompletedOnboarding: $hasCompletedOnboarding)

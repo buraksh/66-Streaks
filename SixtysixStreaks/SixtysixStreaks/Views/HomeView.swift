@@ -73,7 +73,7 @@ struct HomeView: View {
 
             Spacer()
 
-            Text("66 Streaks")
+            Text("66-Day Streak")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundColor(colors.textPrimary)
 

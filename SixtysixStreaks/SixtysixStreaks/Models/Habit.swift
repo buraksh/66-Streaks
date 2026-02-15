@@ -20,6 +20,7 @@ final class Habit {
     var currentStreak: Int
     var lastCheckInDate: Date?
     var reminderTime: Date
+    var reminderEnabled: Bool = true
     var morningMotivationEnabled: Bool
     var status: String // "active", "broken", "completed"
     var completedDates: [Date]
@@ -29,6 +30,7 @@ final class Habit {
         iconName: String = "flame.fill",
         colorHex: String = "10B981",
         reminderTime: Date,
+        reminderEnabled: Bool = true,
         checkInWindowStart: Int = 6,
         checkInWindowEnd: Int = 23,
         morningMotivationEnabled: Bool = false
@@ -43,6 +45,7 @@ final class Habit {
         self.currentStreak = 0
         self.lastCheckInDate = nil
         self.reminderTime = reminderTime
+        self.reminderEnabled = reminderEnabled
         self.morningMotivationEnabled = morningMotivationEnabled
         self.status = HabitStatus.active.rawValue
         self.completedDates = []

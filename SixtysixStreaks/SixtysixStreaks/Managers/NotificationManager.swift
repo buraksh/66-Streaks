@@ -1,8 +1,13 @@
 import Foundation
 import UserNotifications
 
-final class NotificationManager: ObservableObject {
+final class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
+
+    override private init() {
+        super.init()
+        UNUserNotificationCenter.current().delegate = self
+    }
 
     private let reminderMessages = [
         "Day %d is waiting.",
@@ -26,6 +31,12 @@ final class NotificationManager: ObservableObject {
         "Your future self will thank you."
     ]
 
+    // MARK: - UNUserNotificationCenterDelegate
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Show banner and play sound even if app is in foreground
+        completionHandler([.banner, .sound])
+    }
+
     func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             if granted {
@@ -39,6 +50,8 @@ final class NotificationManager: ObservableObject {
         let reminderId = "reminder-\(habit.id.uuidString)"
 
         center.removePendingNotificationRequests(withIdentifiers: [reminderId])
+        
+        guard habit.reminderEnabled else { return }
 
         let content = UNMutableNotificationContent()
         content.title = habit.title

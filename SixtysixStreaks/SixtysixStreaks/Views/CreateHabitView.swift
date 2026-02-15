@@ -15,6 +15,7 @@ struct CreateHabitView: View {
     @State private var selectedIcon = "flame.fill"
     @State private var selectedColorHex = "10B981"
     @State private var reminderTime = Calendar.current.date(from: DateComponents(hour: 9, minute: 0)) ?? Date()
+    @State private var reminderEnabled = true
     @State private var morningMotivationEnabled = false
     @State private var showIconPicker = false
 
@@ -46,6 +47,7 @@ struct CreateHabitView: View {
             _selectedIcon = State(initialValue: habit.iconName)
             _selectedColorHex = State(initialValue: habit.colorHex)
             _reminderTime = State(initialValue: habit.reminderTime)
+            _reminderEnabled = State(initialValue: habit.reminderEnabled)
             _morningMotivationEnabled = State(initialValue: habit.morningMotivationEnabled)
         }
     }
@@ -256,22 +258,41 @@ struct CreateHabitView: View {
                 .foregroundColor(colors.textSecondary)
                 .tracking(1)
 
-            HStack {
-                Image(systemName: "bell.fill")
-                    .foregroundColor(AppTheme.accentBlue)
+            VStack(spacing: 0) {
+                Toggle(isOn: $reminderEnabled) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "bell.fill")
+                            .foregroundColor(reminderEnabled ? AppTheme.accentBlue : colors.textSecondary)
+                        Text("Enable Reminder")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(colors.textPrimary)
+                    }
+                }
+                .tint(AppTheme.accentBlue)
+                .padding(16)
 
-                DatePicker("", selection: $reminderTime, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
-
-                Spacer()
+                if reminderEnabled {
+                    Divider()
+                        .padding(.leading, 52)
+                    
+                    HStack {
+                        Text("Time")
+                            .font(.system(size: 16))
+                            .foregroundColor(colors.textPrimary)
+                            .padding(.leading, 42)
+                        
+                        Spacer()
+                        
+                        DatePicker("", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
+                    }
+                    .padding(16)
+                }
             }
-            .padding(16)
             .background(colors.card)
             .cornerRadius(14)
         }
     }
-
-
 
     // MARK: - Morning Motivation
     private var motivationToggle: some View {
@@ -332,6 +353,7 @@ struct CreateHabitView: View {
         habit.iconName = selectedIcon
         habit.colorHex = selectedColorHex
         habit.reminderTime = reminderTime
+        habit.reminderEnabled = reminderEnabled
         habit.morningMotivationEnabled = morningMotivationEnabled
 
         NotificationManager.shared.cancelNotifications(for: habit)
@@ -353,6 +375,7 @@ struct CreateHabitView: View {
             iconName: selectedIcon,
             colorHex: selectedColorHex,
             reminderTime: reminderTime,
+            reminderEnabled: reminderEnabled,
             morningMotivationEnabled: morningMotivationEnabled
         )
 
