@@ -14,28 +14,75 @@ struct StreakDetailView: View {
     private var colors: AdaptiveColors {
         AdaptiveColors(colorScheme: colorScheme)
     }
+    
+    // Grid columns for the main layout
+    private let gridColumns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
 
     var body: some View {
         NavigationStack {
             ZStack {
                 colors.background.ignoresSafeArea()
 
-                VStack(spacing: 24) {
-                    streakHeader
-                    actionButtons
-                    Spacer()
+                ScrollView {
+                    VStack(spacing: 24) {
+                        heroSection
+                        statsGrid
+                        journeyMap
+                        
+                        Button {
+                            showEditSheet = true
+                        } label: {
+                            Text("Edit")
+                                .font(.system(size: 17, weight: .semibold))
+                                .foregroundColor(colors.textPrimary) // Make it look active
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(colors.card)
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(colors.cardBorder, lineWidth: 1) // Add border for better definition
+                                )
+                        }
+                        .padding(.top, 8)
+                        
+                        Spacer(minLength: 40)
+                    }
+                    .padding(20)
                 }
-                .padding(24)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(colors.textSecondary.opacity(0.6))
+                        Image(systemName: "xmark")
+                            .font(.system(size: 18, weight: .semibold)) // Match HomeView style
+                            .foregroundColor(colors.textSecondary)
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button(role: .destructive) {
+                            showResetConfirmation = true
+                        } label: {
+                            Label("Reset Progress", systemImage: "arrow.counterclockwise")
+                        }
+                        
+                        Button(role: .destructive) {
+                            showDeleteConfirmation = true
+                        } label: {
+                            Label("Delete Habit", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 18, weight: .semibold)) // Match HomeView style
+                            .foregroundColor(colors.textSecondary)
                     }
                 }
             }
@@ -46,7 +93,7 @@ struct StreakDetailView: View {
         .alert("Reset streak?", isPresented: $showResetConfirmation) {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
-                withAnimation(.easeInOut(duration: 0.5)) {
+                withAnimation(.easeInOut) {
                     habit.resetStreak()
                 }
             }
@@ -65,102 +112,135 @@ struct StreakDetailView: View {
         }
     }
 
-    // MARK: - Streak Header
-    private var streakHeader: some View {
-        VStack(spacing: 12) {
+    // MARK: - Hero Section
+    private var heroSection: some View {
+        VStack(spacing: 8) {
             Image(systemName: habit.iconName)
-                .font(.system(size: 28, weight: .medium))
+                .font(.system(size: 40))
                 .foregroundColor(habit.habitColor)
-                .frame(width: 64, height: 64)
-                .background(habit.habitColor.opacity(colorScheme == .dark ? 0.2 : 0.12))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .padding(.bottom, 8)
 
             Text(habit.title)
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 28, weight: .bold))
                 .foregroundColor(colors.textPrimary)
-
-            Text("Day \(habit.currentStreak) of 66")
-                .font(.system(size: 17))
+                .multilineTextAlignment(.center)
+            
+            Text(statusMessage)
+                .font(.system(size: 17, weight: .medium))
                 .foregroundColor(colors.textSecondary)
+                .multilineTextAlignment(.center)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 28)
+        .padding(.top, 10)
+        .padding(.bottom, 10)
+    }
+    
+    // MARK: - Stats Grid
+    private var statsGrid: some View {
+        LazyVGrid(columns: gridColumns, spacing: 16) {
+            // Current Streak Card
+            statCard(
+                title: "Current Streak",
+                value: "\(habit.currentStreak)",
+                unit: "Days",
+                icon: "flame.fill",
+                color: habit.habitColor
+            )
+            
+            // Days Left Card
+            statCard(
+                title: "Days Left",
+                value: "\(max(0, 66 - habit.currentStreak))",
+                unit: "Days",
+                icon: "flag.checkered",
+                color: colors.textSecondary
+            )
+        }
+    }
+    
+    private func statCard(title: String, value: String, unit: String, icon: String, color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 16))
+                    .foregroundColor(color)
+                Spacer()
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(value)
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(colors.textPrimary)
+                    .contentTransition(.numericText())
+                
+                Text(unit)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(colors.textSecondary)
+            }
+            
+            Text(title)
+                .font(.system(size: 13))
+                .foregroundColor(colors.textSecondary.opacity(0.8))
+                .padding(.top, 4)
+        }
+        .padding(16)
         .background(colors.card)
-        .cornerRadius(16)
+        .cornerRadius(20)
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 20)
                 .stroke(colors.cardBorder, lineWidth: 1)
         )
     }
 
-    // MARK: - Action Buttons
-    private var actionButtons: some View {
-        VStack(spacing: 0) {
-            // Edit Streak
-            Button {
-                showEditSheet = true
-            } label: {
-                HStack {
-                    Text("Edit Streak")
-                        .font(.system(size: 17))
-                        .foregroundColor(colors.textPrimary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(colors.textSecondary)
-                }
-                .padding(16)
+    // MARK: - Journey Map
+    private var journeyMap: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("66 Day Journey")
+                    .font(.headline)
+                    .foregroundColor(colors.textPrimary)
+                
+                Spacer()
+                
+                Text("\(habit.progressPercentage)%")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(habit.habitColor)
             }
-
-            Divider()
-                .padding(.leading, 16)
-
-            // Reset Progress
-            Button {
-                showResetConfirmation = true
-            } label: {
-                HStack {
-                    Text("Reset Progress")
-                        .font(.system(size: 17))
-                        .foregroundColor(colors.textPrimary)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(colors.textSecondary)
-                }
+            .padding(.horizontal, 4)
+            
+            StreakGridView(completedDays: habit.currentStreak, totalDays: 66, filledColor: habit.habitColor)
                 .padding(16)
-            }
-
-            Divider()
-
-            // Delete Streak
-            Button {
-                showDeleteConfirmation = true
-            } label: {
-                HStack {
-                    Text("Delete Streak")
-                        .font(.system(size: 17))
-                        .foregroundColor(AppTheme.dangerRed)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(AppTheme.dangerRed.opacity(0.6))
-                }
-                .padding(16)
-            }
+                .background(colors.card)
+                .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(colors.cardBorder, lineWidth: 1)
+                )
         }
-        .background(colors.card)
-        .cornerRadius(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(colors.cardBorder, lineWidth: 1)
-        )
+    }
+
+    // MARK: - Helpers
+    private var statusMessage: String {
+        switch habit.currentStreak {
+        case 0:
+            return "Start your journey today"
+        case 1...2:
+            return "Great start!"
+        case 3...10:
+            return "Building momentum"
+        case 11...30:
+            return "Consistency is key"
+        case 31...65:
+            return "Almost automatic"
+        default:
+            return "Habit formed!"
+        }
     }
 }
 
 #Preview {
     let habit = Habit(title: "Gym", iconName: "dumbbell.fill", colorHex: "8B5CF6", reminderTime: Date())
-    habit.currentStreak = 23
+    habit.currentStreak = 40
 
     return StreakDetailView(habit: habit)
         .modelContainer(for: Habit.self, inMemory: true)
