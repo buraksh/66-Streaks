@@ -34,7 +34,7 @@ struct CreateHabitView: View {
     private var canCreate: Bool {
         let hasTitle = !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         if isEditing { return hasTitle }
-        return hasTitle && habits.count < 10
+        return hasTitle && habits.count < 4
     }
 
     init(isOnboarding: Bool, onComplete: (() -> Void)? = nil, editingHabit: Habit? = nil) {

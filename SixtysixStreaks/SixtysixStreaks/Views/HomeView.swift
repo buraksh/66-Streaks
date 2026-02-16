@@ -86,7 +86,7 @@ struct HomeView: View {
 
             Spacer()
 
-            if habits.count < 10 {
+            if habits.count < 4 {
                 Button {
                     showCreateHabit = true
                 } label: {
