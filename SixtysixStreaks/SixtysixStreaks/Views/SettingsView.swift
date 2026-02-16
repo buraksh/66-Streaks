@@ -67,18 +67,23 @@ struct SettingsView: View {
                         Text("About")
                     }
 
-                    #if DEBUG
                     Section {
-                        debugRow(icon: "dice.fill", title: "Add Random Data", color: .orange) {
-                            addRandomData()
-                        }
-                        debugRow(icon: "clock.arrow.circlepath", title: "Clear Today's Data", color: AppTheme.accentBlue) {
-                            clearTodaysData()
-                        }
-                        debugRow(icon: "trash.fill", title: "Erase All Data", color: AppTheme.dangerRed) {
+                        settingsActionRow(icon: "trash.fill", title: "Erase All Data", color: AppTheme.dangerRed) {
                             showEraseAlert = true
                         }
-                        debugRow(icon: "arrow.counterclockwise", title: "Restart Onboarding", color: .purple) {
+                    } header: {
+                        Text("Data")
+                    }
+
+                    #if DEBUG
+                    Section {
+                        settingsActionRow(icon: "dice.fill", title: "Add Random Data", color: .orange) {
+                            addRandomData()
+                        }
+                        settingsActionRow(icon: "clock.arrow.circlepath", title: "Clear Today's Data", color: AppTheme.accentBlue) {
+                            clearTodaysData()
+                        }
+                        settingsActionRow(icon: "arrow.counterclockwise", title: "Restart Onboarding", color: .purple) {
                             restartOnboarding()
                         }
                     } header: {
@@ -162,8 +167,8 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Debug Row
-    private func debugRow(icon: String, title: String, color: Color, action: @escaping () -> Void) -> some View {
+    // MARK: - Action Row
+    private func settingsActionRow(icon: String, title: String, color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: icon)
@@ -192,7 +197,7 @@ struct SettingsView: View {
 
         let calendar = Calendar.current
 
-        for sample in sampleHabits {
+        for (index, sample) in sampleHabits.enumerated() {
             let reminderDate = calendar.date(from: DateComponents(hour: 9, minute: 0)) ?? Date()
             let habit = Habit(
                 title: sample.0,
@@ -201,12 +206,21 @@ struct SettingsView: View {
                 reminderTime: reminderDate
             )
 
-            let randomDays = Int.random(in: 8...40)
+            // Force the first habit to have a 66-day streak
+            let randomDays = (index == 0) ? 66 : Int.random(in: 8...40)
+            
             let startDate = calendar.date(byAdding: .day, value: -randomDays, to: Date())!
             habit.startDate = calendar.startOfDay(for: startDate)
             habit.currentStreak = randomDays
-            // Set lastCheckInDate to yesterday so they're NOT checked in today
-            habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
+            
+            // If it's the 66-day streak, set completion status
+            if randomDays >= 66 {
+                habit.habitStatus = .completed
+                habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
+            } else {
+                // Set lastCheckInDate to yesterday so they're NOT checked in today
+                habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
+            }
 
             var dates: [Date] = []
             for day in 0..<randomDays {
