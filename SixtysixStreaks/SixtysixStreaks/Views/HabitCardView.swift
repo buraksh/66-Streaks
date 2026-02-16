@@ -136,17 +136,17 @@ struct HabitCardView: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 // Track
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: 6)
                     .fill(colors.gridEmptyCard)
-                    .frame(height: 6)
+                    .frame(height: 12)
 
                 // Fill
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: 6)
                     .fill(habit.habitColor)
-                    .frame(width: max(0, geo.size.width * habit.progressFraction), height: 6)
+                    .frame(width: max(0, geo.size.width * habit.progressFraction), height: 12)
             }
         }
-        .frame(height: 6)
+        .frame(height: 12)
     }
 
     // MARK: - Grid Progress

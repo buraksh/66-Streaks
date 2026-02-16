@@ -128,7 +128,7 @@ struct HomeView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 14)
-                    .background(AppTheme.accentBlue)
+                    .background(AppTheme.ctaGradient)
                     .cornerRadius(14)
             }
             .padding(.top, 8)

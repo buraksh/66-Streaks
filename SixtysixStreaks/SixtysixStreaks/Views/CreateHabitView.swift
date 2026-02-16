@@ -337,7 +337,7 @@ struct CreateHabitView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 18)
-                .background(canCreate ? AppTheme.accentBlue : Color.gray.opacity(0.4))
+                .background(canCreate ? AppTheme.ctaGradient : LinearGradient(colors: [Color.gray.opacity(0.4)], startPoint: .leading, endPoint: .trailing))
                 .cornerRadius(16)
         }
         .disabled(!canCreate)

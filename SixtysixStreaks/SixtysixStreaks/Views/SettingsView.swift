@@ -98,13 +98,13 @@ struct SettingsView: View {
             .sheet(isPresented: $showPrivacy) {
                 InAppWebView(
                     title: "Privacy Policy",
-                    url: URL(string: "https://driftbreath.com/privacy")!
+                    url: URL(string: "https://66-streaks.buraksahin.net/privacy/")!
                 )
             }
             .sheet(isPresented: $showTerms) {
                 InAppWebView(
                     title: "Terms of Service",
-                    url: URL(string: "https://driftbreath.com/terms")!
+                    url: URL(string: "https://66-streaks.buraksahin.net/terms")!
                 )
             }
             .alert("Erase All Data?", isPresented: $showEraseAlert) {

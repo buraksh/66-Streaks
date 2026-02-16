@@ -41,13 +41,12 @@ enum AppTheme {
         )
     }
 
-    /// Subtle brand gradient for CTA buttons (less intense, more sophisticated)
+    /// Brand gradient for CTA buttons (pink → violet, matching web style)
     static var ctaGradient: LinearGradient {
         LinearGradient(
             colors: [
-                Color(hex: "8B5CF6"),  // warm violet
-                Color(hex: "7C5CFC"),  // primary
-                Color(hex: "6D5CFA"),  // slightly cooler violet
+                Color(hex: "EC4899"),  // hot pink
+                Color(hex: "7C5CFC"),  // violet (primary accent)
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
