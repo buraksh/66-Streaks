@@ -5,6 +5,7 @@ struct CreateHabitView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(LanguageManager.self) private var lang
     @Query private var habits: [Habit]
 
     let isOnboarding: Bool
@@ -52,6 +53,16 @@ struct CreateHabitView: View {
         }
     }
 
+    private var navigationTitleText: String {
+        if isEditing {
+            return lang.localized("create.edit_streak")
+        } else if isOnboarding {
+            return lang.localized("create.first_streak")
+        } else {
+            return lang.localized("create.new_streak")
+        }
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -82,12 +93,12 @@ struct CreateHabitView: View {
                     .background(colors.background)
                 }
             }
-            .navigationTitle(isEditing ? "Edit Streak" : (isOnboarding ? "Your First Streak" : "New Streak"))
+            .navigationTitle(navigationTitleText)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if !isOnboarding || isEditing {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") { dismiss() }
+                        Button(lang.localized("create.cancel")) { dismiss() }
                     }
                 }
             }
@@ -97,16 +108,16 @@ struct CreateHabitView: View {
     // MARK: - Title Section
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("HABIT NAME")
+            Text(lang.localized("create.habit_name"))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .tracking(1)
 
-            TextField("e.g. Go to the gym", text: $title)
+            TextField(lang.localized("create.habit_placeholder"), text: $title)
                 .font(.system(size: 17))
                 .padding(16)
                 .background(colors.card)
-                .cornerRadius(14)
+                .clipShape(.rect(cornerRadius: 14))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
                         .stroke(Color.gray.opacity(0.15), lineWidth: 1)
@@ -117,9 +128,9 @@ struct CreateHabitView: View {
     // MARK: - Icon Section
     private var iconSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("ICON")
+            Text(lang.localized("create.icon"))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .tracking(1)
 
             Button {
@@ -128,24 +139,24 @@ struct CreateHabitView: View {
                 HStack(spacing: 14) {
                     Image(systemName: selectedIcon)
                         .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(selectedColor)
+                        .foregroundStyle(selectedColor)
                         .frame(width: 44, height: 44)
                         .background(selectedColor.opacity(colorScheme == .dark ? 0.2 : 0.12))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .clipShape(.rect(cornerRadius: 12))
 
-                    Text("Choose Icon")
+                    Text(lang.localized("create.choose_icon"))
                         .font(.system(size: 16))
-                        .foregroundColor(colors.textPrimary)
+                        .foregroundStyle(colors.textPrimary)
 
                     Spacer()
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(colors.textSecondary)
+                        .foregroundStyle(colors.textSecondary)
                 }
                 .padding(12)
                 .background(colors.card)
-                .cornerRadius(14)
+                .clipShape(.rect(cornerRadius: 14))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
                         .stroke(Color.gray.opacity(0.15), lineWidth: 1)
@@ -167,9 +178,9 @@ struct CreateHabitView: View {
                     VStack(alignment: .leading, spacing: 24) {
                         ForEach(AppTheme.iconCategories) { category in
                             VStack(alignment: .leading, spacing: 10) {
-                                Text(category.name.uppercased())
+                                Text(lang.localized(category.name).uppercased())
                                     .font(.system(size: 11, weight: .semibold))
-                                    .foregroundColor(colors.textSecondary)
+                                    .foregroundStyle(colors.textSecondary)
                                     .tracking(0.8)
                                     .padding(.horizontal, 4)
 
@@ -177,14 +188,14 @@ struct CreateHabitView: View {
                                     ForEach(category.icons, id: \.self) { icon in
                                         Image(systemName: icon)
                                             .font(.system(size: 20, weight: .medium))
-                                            .foregroundColor(selectedIcon == icon ? selectedColor : colors.textSecondary)
+                                            .foregroundStyle(selectedIcon == icon ? selectedColor : colors.textSecondary)
                                             .frame(width: 52, height: 52)
                                             .background(
                                                 selectedIcon == icon
                                                     ? selectedColor.opacity(colorScheme == .dark ? 0.2 : 0.12)
                                                     : colors.card
                                             )
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .clipShape(.rect(cornerRadius: 12))
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 12)
                                                     .stroke(
@@ -204,11 +215,11 @@ struct CreateHabitView: View {
                     .padding(20)
                 }
             }
-            .navigationTitle("Choose Icon")
+            .navigationTitle(lang.localized("create.choose_icon"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { showIconPicker = false }
+                    Button(lang.localized("settings.done")) { showIconPicker = false }
                 }
             }
         }
@@ -218,9 +229,9 @@ struct CreateHabitView: View {
     // MARK: - Color Picker
     private var colorPickerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("COLOR")
+            Text(lang.localized("create.color"))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .tracking(1)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 6), spacing: 12) {
@@ -246,26 +257,26 @@ struct CreateHabitView: View {
             }
             .padding(16)
             .background(colors.card)
-            .cornerRadius(14)
+            .clipShape(.rect(cornerRadius: 14))
         }
     }
 
     // MARK: - Reminder Section
     private var reminderSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("DAILY REMINDER")
+            Text(lang.localized("create.daily_reminder"))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .tracking(1)
 
             VStack(spacing: 0) {
                 Toggle(isOn: $reminderEnabled) {
                     HStack(spacing: 12) {
                         Image(systemName: "bell.fill")
-                            .foregroundColor(reminderEnabled ? AppTheme.accentBlue : colors.textSecondary)
-                        Text("Enable Reminder")
+                            .foregroundStyle(reminderEnabled ? AppTheme.accentBlue : colors.textSecondary)
+                        Text(lang.localized("create.enable_reminder"))
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(colors.textPrimary)
+                            .foregroundStyle(colors.textPrimary)
                     }
                 }
                 .tint(AppTheme.accentBlue)
@@ -276,9 +287,9 @@ struct CreateHabitView: View {
                         .padding(.leading, 52)
                     
                     HStack {
-                        Text("Time")
+                        Text(lang.localized("create.time"))
                             .font(.system(size: 16))
-                            .foregroundColor(colors.textPrimary)
+                            .foregroundStyle(colors.textPrimary)
                             .padding(.leading, 42)
                         
                         Spacer()
@@ -290,36 +301,36 @@ struct CreateHabitView: View {
                 }
             }
             .background(colors.card)
-            .cornerRadius(14)
+            .clipShape(.rect(cornerRadius: 14))
         }
     }
 
     // MARK: - Morning Motivation
     private var motivationToggle: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("OPTIONAL")
+            Text(lang.localized("create.optional"))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .tracking(1)
 
             Toggle(isOn: $morningMotivationEnabled) {
                 HStack(spacing: 12) {
                     Image(systemName: "sunrise.fill")
-                        .foregroundColor(.orange)
+                        .foregroundStyle(.orange)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Morning Motivation")
+                        Text(lang.localized("create.morning_motivation"))
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(colors.textPrimary)
-                        Text("Get an 8 AM boost message")
+                            .foregroundStyle(colors.textPrimary)
+                        Text(lang.localized("create.morning_boost"))
                             .font(.system(size: 13))
-                            .foregroundColor(colors.textSecondary)
+                            .foregroundStyle(colors.textSecondary)
                     }
                 }
             }
             .tint(AppTheme.accentBlue)
             .padding(16)
             .background(colors.card)
-            .cornerRadius(14)
+            .clipShape(.rect(cornerRadius: 14))
         }
     }
 
@@ -332,13 +343,13 @@ struct CreateHabitView: View {
                 createHabit()
             }
         } label: {
-            Text(isEditing ? "Save Changes" : "Start 66-Day Challenge")
+            Text(isEditing ? lang.localized("create.save_changes") : lang.localized("create.start_challenge"))
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 18)
                 .background(canCreate ? AppTheme.ctaGradient : LinearGradient(colors: [Color.gray.opacity(0.4)], startPoint: .leading, endPoint: .trailing))
-                .cornerRadius(16)
+                .clipShape(.rect(cornerRadius: 16))
         }
         .disabled(!canCreate)
     }
@@ -363,7 +374,6 @@ struct CreateHabitView: View {
         NotificationManager.shared.scheduleMorningMotivation(for: habit)
         
         // Refresh consolidated emergency reminder
-        // For new habits, we must manually include them as the Query might not rely updates yet
         var currentHabits = habits
         if !currentHabits.contains(where: { $0.id == habit.id }) {
             currentHabits.append(habit)
@@ -405,9 +415,4 @@ struct CreateHabitView: View {
 
         dismiss()
     }
-
-
 }
-
-// No changes needed, file audited and looks correct.
-

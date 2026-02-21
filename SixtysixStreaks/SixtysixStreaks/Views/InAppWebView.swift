@@ -21,6 +21,7 @@ struct InAppWebView: View {
     let url: URL
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(LanguageManager.self) private var lang
     @State private var isLoading = true
 
     private var colors: AdaptiveColors {
@@ -45,7 +46,7 @@ struct InAppWebView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button(lang.localized("settings.done")) { dismiss() }
                 }
             }
         }

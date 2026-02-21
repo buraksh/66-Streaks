@@ -6,6 +6,7 @@ struct HabitCardView: View {
     var onCardTapped: (() -> Void)? = nil
     var onCheckInChange: (() -> Void)? = nil
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(LanguageManager.self) private var lang
     @AppStorage("cardViewStyle") private var cardViewStyle = "progressBar"
     @State private var animateCheckIn = false
     @State private var dayPulse = false
@@ -71,9 +72,9 @@ struct HabitCardView: View {
                     .lineLimit(1)
 
                 HStack(spacing: 0) {
-                    Text("Day ")
+                    Text(lang.localized("habit_card.day"))
                         .font(.system(size: 13))
-                        .foregroundColor(colors.textSecondary)
+                        .foregroundStyle(colors.textSecondary)
                     Text("\(habit.currentStreak)")
                         .font(.system(size: 13, weight: dayPulse ? .bold : .regular))
                         .foregroundColor(dayPulse ? habit.habitColor : colors.textSecondary)

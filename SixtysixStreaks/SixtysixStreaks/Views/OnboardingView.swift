@@ -3,6 +3,7 @@ import SwiftData
 
 struct OnboardingView: View {
     @Binding var hasCompletedOnboarding: Bool
+    @Environment(LanguageManager.self) private var lang
     @State private var currentPage = 0
     @State private var showCreateHabit = false
 
@@ -27,9 +28,9 @@ struct OnboardingView: View {
                         triggerHaptic()
                         showCreateHabit = true
                     } label: {
-                        Text("Skip")
+                        Text(lang.localized("onboarding.skip"))
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(Color.white.opacity(0.4))
+                            .foregroundStyle(Color.white.opacity(0.4))
                     }
                     .padding(.trailing, 28)
                     .padding(.top, 8)
@@ -72,11 +73,11 @@ struct OnboardingView: View {
                 } label: {
                     Text(ctaText)
                         .font(.system(size: 17, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 18)
                         .background(AppTheme.ctaGradient)
-                        .cornerRadius(16)
+                        .clipShape(.rect(cornerRadius: 16))
                         .shadow(color: AppTheme.accentBlue.opacity(0.45), radius: 20, x: 0, y: 8)
                         .shadow(color: AppTheme.accentBlue.opacity(0.2), radius: 40, x: 0, y: 4)
                 }
@@ -164,9 +165,9 @@ struct OnboardingView: View {
 
     private var ctaText: String {
         switch currentPage {
-        case 0: return "Continue"
-        case 1: return "Start My Habit"
-        default: return "Continue"
+        case 0: return lang.localized("onboarding.continue")
+        case 1: return lang.localized("onboarding.start_my_habit")
+        default: return lang.localized("onboarding.continue")
         }
     }
 
@@ -204,9 +205,9 @@ struct OnboardingView: View {
                 .frame(height: 48)
 
             // Headline
-            Text("One habit.\n66 days. A new you.")
+            Text(lang.localized("onboarding.screen1.headline"))
                 .font(.system(size: 34, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
                 .opacity(textVisible ? 1 : 0)
@@ -216,9 +217,9 @@ struct OnboardingView: View {
                 .frame(height: 16)
 
             // Subtitle
-            Text("No streaks to chase. Just show up.")
+            Text(lang.localized("onboarding.screen1.subtitle"))
                 .font(.system(size: 17, weight: .regular))
-                .foregroundColor(Color.white.opacity(0.55))
+                .foregroundStyle(Color.white.opacity(0.55))
                 .multilineTextAlignment(.center)
                 .opacity(textVisible ? 1 : 0)
                 .offset(y: textVisible ? 0 : 16)
@@ -230,10 +231,10 @@ struct OnboardingView: View {
             HStack(spacing: 6) {
                 Image(systemName: "brain.head.profile")
                     .font(.system(size: 12))
-                    .foregroundColor(Color(hex: "A78BFA"))
-                Text("Backed by science — 66 days to make it automatic")
+                    .foregroundStyle(Color(hex: "A78BFA"))
+                Text(lang.localized("onboarding.screen1.badge"))
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color.white.opacity(0.4))
+                    .foregroundStyle(Color.white.opacity(0.4))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -291,9 +292,9 @@ struct OnboardingView: View {
                 .frame(height: 48)
 
             // Headline
-            Text("Your streak.\nYour rules.\nYour transformation.")
+            Text(lang.localized("onboarding.screen2.headline"))
                 .font(.system(size: 34, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .multilineTextAlignment(.center)
                 .lineSpacing(6)
                 .opacity(textVisible ? 1 : 0)
@@ -303,9 +304,9 @@ struct OnboardingView: View {
                 .frame(height: 16)
 
             // Subtitle
-            Text("Small steps. Big change. Let's go.")
+            Text(lang.localized("onboarding.screen2.subtitle"))
                 .font(.system(size: 17, weight: .regular))
-                .foregroundColor(Color.white.opacity(0.55))
+                .foregroundStyle(Color.white.opacity(0.55))
                 .multilineTextAlignment(.center)
                 .opacity(textVisible ? 1 : 0)
                 .offset(y: textVisible ? 0 : 16)
@@ -317,10 +318,10 @@ struct OnboardingView: View {
             HStack(spacing: 6) {
                 Image(systemName: "person.2.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(Color(hex: "34D399"))
-                Text("Join thousands building better habits")
+                    .foregroundStyle(Color(hex: "34D399"))
+                Text(lang.localized("onboarding.screen2.badge"))
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color.white.opacity(0.4))
+                    .foregroundStyle(Color.white.opacity(0.4))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -338,4 +339,5 @@ struct OnboardingView: View {
 #Preview {
     OnboardingView(hasCompletedOnboarding: .constant(false))
         .modelContainer(for: Habit.self, inMemory: true)
+        .environment(LanguageManager.shared)
 }

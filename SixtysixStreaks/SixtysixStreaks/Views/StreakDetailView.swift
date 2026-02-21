@@ -6,6 +6,7 @@ struct StreakDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
+    @Environment(LanguageManager.self) private var lang
     @Query private var allHabits: [Habit]
 
     @State private var showResetConfirmation = false
@@ -15,14 +16,6 @@ struct StreakDetailView: View {
     private var colors: AdaptiveColors {
         AdaptiveColors(colorScheme: colorScheme)
     }
-    
-    // ... (rest of body until Delete action) ...
-
-
-
-    // ... (rest of view) ...
-    
-    // Grid columns for the main layout
 
     private let gridColumns = [
         GridItem(.flexible()),
@@ -43,16 +36,16 @@ struct StreakDetailView: View {
                         Button {
                             showEditSheet = true
                         } label: {
-                            Text("Edit")
+                            Text(lang.localized("detail.edit"))
                                 .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(colors.textPrimary) // Make it look active
+                                .foregroundStyle(colors.textPrimary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
                                 .background(colors.card)
-                                .cornerRadius(12)
+                                .clipShape(.rect(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .stroke(colors.cardBorder, lineWidth: 1) // Add border for better definition
+                                        .stroke(colors.cardBorder, lineWidth: 1)
                                 )
                         }
                         .padding(.top, 8)
@@ -69,8 +62,8 @@ struct StreakDetailView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.system(size: 18, weight: .semibold)) // Match HomeView style
-                            .foregroundColor(colors.textSecondary)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(colors.textSecondary)
                     }
                 }
                 
@@ -79,18 +72,18 @@ struct StreakDetailView: View {
                         Button(role: .destructive) {
                             showResetConfirmation = true
                         } label: {
-                            Label("Reset Progress", systemImage: "arrow.counterclockwise")
+                            Label(lang.localized("detail.reset_progress"), systemImage: "arrow.counterclockwise")
                         }
                         
                         Button(role: .destructive) {
                             showDeleteConfirmation = true
                         } label: {
-                            Label("Delete Habit", systemImage: "trash")
+                            Label(lang.localized("detail.delete_habit"), systemImage: "trash")
                         }
                     } label: {
                         Image(systemName: "ellipsis")
-                            .font(.system(size: 18, weight: .semibold)) // Match HomeView style
-                            .foregroundColor(colors.textSecondary)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(colors.textSecondary)
                     }
                 }
             }
@@ -98,25 +91,25 @@ struct StreakDetailView: View {
         .sheet(isPresented: $showEditSheet) {
             CreateHabitView(isOnboarding: false, editingHabit: habit)
         }
-        .alert("Reset streak?", isPresented: $showResetConfirmation) {
-            Button("Cancel", role: .cancel) {}
-            Button("Reset", role: .destructive) {
+        .alert(lang.localized("detail.reset_streak"), isPresented: $showResetConfirmation) {
+            Button(lang.localized("detail.cancel"), role: .cancel) {}
+            Button(lang.localized("detail.reset"), role: .destructive) {
                 withAnimation(.easeInOut) {
                     habit.resetStreak()
                 }
             }
         } message: {
-            Text("You will start again from Day 0.\nThis cannot be undone.")
+            Text(lang.localized("detail.reset_message"))
         }
-        .alert("Delete \"\(habit.title)\"?", isPresented: $showDeleteConfirmation) {
-            Button("Cancel", role: .cancel) {}
-            Button("Delete", role: .destructive) {
+        .alert(lang.localized("detail.delete_title", habit.title), isPresented: $showDeleteConfirmation) {
+            Button(lang.localized("detail.cancel"), role: .cancel) {}
+            Button(lang.localized("detail.delete"), role: .destructive) {
                 NotificationManager.shared.cancelNotifications(for: habit)
                 modelContext.delete(habit)
                 dismiss()
             }
         } message: {
-            Text("All progress will be removed permanently.")
+            Text(lang.localized("detail.delete_message"))
         }
     }
 
@@ -125,17 +118,17 @@ struct StreakDetailView: View {
         VStack(spacing: 8) {
             Image(systemName: habit.iconName)
                 .font(.system(size: 40))
-                .foregroundColor(habit.habitColor)
+                .foregroundStyle(habit.habitColor)
                 .padding(.bottom, 8)
 
             Text(habit.title)
                 .font(.system(size: 28, weight: .bold))
-                .foregroundColor(colors.textPrimary)
+                .foregroundStyle(colors.textPrimary)
                 .multilineTextAlignment(.center)
             
             Text(statusMessage)
                 .font(.system(size: 17, weight: .medium))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.top, 10)
@@ -145,20 +138,18 @@ struct StreakDetailView: View {
     // MARK: - Stats Grid
     private var statsGrid: some View {
         LazyVGrid(columns: gridColumns, spacing: 16) {
-            // Current Streak Card
             statCard(
-                title: "Current Streak",
+                title: lang.localized("detail.current_streak"),
                 value: "\(habit.currentStreak)",
-                unit: "Days",
+                unit: lang.localized("detail.days"),
                 icon: "flame.fill",
                 color: habit.habitColor
             )
             
-            // Days Left Card
             statCard(
-                title: "Days Left",
+                title: lang.localized("detail.days_left"),
                 value: "\(max(0, 66 - habit.currentStreak))",
-                unit: "Days",
+                unit: lang.localized("detail.days"),
                 icon: "flag.checkered",
                 color: colors.textSecondary
             )
@@ -170,29 +161,29 @@ struct StreakDetailView: View {
             HStack {
                 Image(systemName: icon)
                     .font(.system(size: 16))
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                 Spacer()
             }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(value)
                     .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(colors.textPrimary)
+                    .foregroundStyle(colors.textPrimary)
                     .contentTransition(.numericText())
                 
                 Text(unit)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(colors.textSecondary)
+                    .foregroundStyle(colors.textSecondary)
             }
             
             Text(title)
                 .font(.system(size: 13))
-                .foregroundColor(colors.textSecondary.opacity(0.8))
+                .foregroundStyle(colors.textSecondary.opacity(0.8))
                 .padding(.top, 4)
         }
         .padding(16)
         .background(colors.card)
-        .cornerRadius(20)
+        .clipShape(.rect(cornerRadius: 20))
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(colors.cardBorder, lineWidth: 1)
@@ -203,23 +194,23 @@ struct StreakDetailView: View {
     private var journeyMap: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("66 Day Journey")
+                Text(lang.localized("detail.journey_title"))
                     .font(.headline)
-                    .foregroundColor(colors.textPrimary)
+                    .foregroundStyle(colors.textPrimary)
                 
                 Spacer()
                 
                 Text("\(habit.progressPercentage)%")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(habit.habitColor)
+                    .foregroundStyle(habit.habitColor)
             }
             .padding(.horizontal, 4)
             
             StreakGridView(completedDays: habit.currentStreak, totalDays: 66, filledColor: habit.habitColor)
                 .padding(16)
                 .background(colors.card)
-                .cornerRadius(20)
+                .clipShape(.rect(cornerRadius: 20))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(colors.cardBorder, lineWidth: 1)
@@ -231,17 +222,17 @@ struct StreakDetailView: View {
     private var statusMessage: String {
         switch habit.currentStreak {
         case 0:
-            return "Start your journey today"
+            return lang.localized("detail.status_start")
         case 1...2:
-            return "Great start!"
+            return lang.localized("detail.status_great")
         case 3...10:
-            return "Building momentum"
+            return lang.localized("detail.status_momentum")
         case 11...30:
-            return "Consistency is key"
+            return lang.localized("detail.status_consistency")
         case 31...65:
-            return "Almost automatic"
+            return lang.localized("detail.status_almost")
         default:
-            return "Habit formed!"
+            return lang.localized("detail.status_formed")
         }
     }
     
@@ -256,4 +247,5 @@ struct StreakDetailView: View {
 
     return StreakDetailView(habit: habit)
         .modelContainer(for: Habit.self, inMemory: true)
+        .environment(LanguageManager.shared)
 }

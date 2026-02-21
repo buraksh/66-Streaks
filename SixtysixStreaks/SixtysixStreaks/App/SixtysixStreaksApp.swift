@@ -5,6 +5,7 @@ import SwiftData
 struct SixtyixStreaksApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("appThemeMode") private var appThemeMode = "system"
+    @State private var languageManager = LanguageManager.shared
 
     init() {
         // Initialize NotificationManager to set the delegate
@@ -14,6 +15,7 @@ struct SixtyixStreaksApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                .environment(languageManager)
                 .preferredColorScheme(colorScheme)
         }
         .modelContainer(for: Habit.self)

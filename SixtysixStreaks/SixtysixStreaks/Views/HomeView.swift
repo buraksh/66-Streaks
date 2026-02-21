@@ -4,6 +4,7 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(LanguageManager.self) private var lang
     @Query(sort: \Habit.startDate, order: .forward) private var habits: [Habit]
     @State private var showCreateHabit = false
     @State private var showSettings = false
@@ -75,14 +76,14 @@ struct HomeView: View {
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 18, weight: .medium))
-                    .foregroundColor(colors.textSecondary)
+                    .foregroundStyle(colors.textSecondary)
             }
 
             Spacer()
 
-            Text("66-Day Streak")
+            Text(lang.localized("home.title"))
                 .font(.system(size: 17, weight: .semibold))
-                .foregroundColor(colors.textPrimary)
+                .foregroundStyle(colors.textPrimary)
 
             Spacer()
 
@@ -92,7 +93,7 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(width: 32, height: 32)
                         .background(AppTheme.ctaGradient)
                         .clipShape(Circle())
@@ -111,25 +112,25 @@ struct HomeView: View {
             Text("🔥")
                 .font(.system(size: 60))
 
-            Text("No active streaks")
+            Text(lang.localized("home.empty_title"))
                 .font(.title3)
                 .fontWeight(.semibold)
-                .foregroundColor(colors.textPrimary)
+                .foregroundStyle(colors.textPrimary)
 
-            Text("Start your first 66-day challenge")
+            Text(lang.localized("home.empty_subtitle"))
                 .font(.subheadline)
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
 
             Button {
                 showCreateHabit = true
             } label: {
-                Text("Create Streak")
+                Text(lang.localized("home.create_streak"))
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 14)
                     .background(AppTheme.ctaGradient)
-                    .cornerRadius(14)
+                    .clipShape(.rect(cornerRadius: 14))
             }
             .padding(.top, 8)
         }
@@ -137,22 +138,23 @@ struct HomeView: View {
 
     private var footerSection: some View {
         VStack(spacing: 16) {
-            Text("It takes 66 days to form a permanent habit.")
+            Text(lang.localized("home.footer"))
                 .font(.system(size: 14))
-                .foregroundColor(colors.textSecondary)
+                .foregroundStyle(colors.textSecondary)
                 .multilineTextAlignment(.center)
 
             HStack(spacing: 6) {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 11))
-                Text("\(habits.count) Active Journey\(habits.count == 1 ? "" : "s")")
+                let journeyKey = habits.count == 1 ? "home.active_journey_singular" : "home.active_journey_plural"
+                Text(lang.localized(journeyKey, habits.count))
                     .font(.system(size: 13, weight: .medium))
             }
-            .foregroundColor(colors.textSecondary)
+            .foregroundStyle(colors.textSecondary)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(colors.card)
-            .cornerRadius(20)
+            .clipShape(.rect(cornerRadius: 20))
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(colors.cardBorder, lineWidth: 1)
@@ -184,5 +186,6 @@ struct HomeView: View {
 
     return HomeView()
         .modelContainer(container)
+        .environment(LanguageManager.shared)
         .preferredColorScheme(.dark)
 }

@@ -5,10 +5,10 @@ enum CardViewStyle: String, CaseIterable {
     case progressBar
     case grid
 
-    var label: String {
+    var localizedLabel: String {
         switch self {
-        case .progressBar: return "Progress Bar"
-        case .grid: return "Grid"
+        case .progressBar: return LanguageManager.shared.localized("card_style.progress_bar")
+        case .grid: return LanguageManager.shared.localized("card_style.grid")
         }
     }
 
@@ -100,7 +100,7 @@ enum AppTheme {
     }
 
     static let iconCategories: [IconCategory] = [
-        IconCategory(name: "Fitness & Sports", icons: [
+        IconCategory(name: "icon.fitness", icons: [
             "dumbbell.fill",
             "figure.run",
             "figure.walk",
@@ -127,7 +127,7 @@ enum AppTheme {
             "figure.dance",
             "figure.strengthtraining.traditional"
         ]),
-        IconCategory(name: "Health & Wellness", icons: [
+        IconCategory(name: "icon.health", icons: [
             "heart.fill",
             "heart.text.square.fill",
             "drop.fill",
@@ -147,7 +147,7 @@ enum AppTheme {
             "ear.fill",
             "hand.raised.fill"
         ]),
-        IconCategory(name: "Food & Drink", icons: [
+        IconCategory(name: "icon.food", icons: [
             "fork.knife",
             "cup.and.saucer.fill",
             "mug.fill",
@@ -161,7 +161,7 @@ enum AppTheme {
             "popcorn.fill",
             "frying.pan.fill"
         ]),
-        IconCategory(name: "Learning & Focus", icons: [
+        IconCategory(name: "icon.learning", icons: [
             "book.fill",
             "graduationcap.fill",
             "pencil.line",
@@ -179,7 +179,7 @@ enum AppTheme {
             "backpack.fill",
             "paperclip"
         ]),
-        IconCategory(name: "Creative", icons: [
+        IconCategory(name: "icon.creative", icons: [
             "music.note",
             "paintbrush.fill",
             "camera.fill",
@@ -196,7 +196,7 @@ enum AppTheme {
             "swatchpalette.fill",
             "photo.artframe"
         ]),
-        IconCategory(name: "Productivity", icons: [
+        IconCategory(name: "icon.productivity", icons: [
             "chevron.left.forwardslash.chevron.right",
             "laptopcomputer",
             "desktopcomputer",
@@ -215,7 +215,7 @@ enum AppTheme {
             "externaldrive.fill",
             "server.rack"
         ]),
-        IconCategory(name: "Lifestyle", icons: [
+        IconCategory(name: "icon.lifestyle", icons: [
             "sunrise.fill",
             "sparkles",
             "star.fill",
@@ -239,7 +239,7 @@ enum AppTheme {
             "tshirt.fill",
             "ticket.fill"
         ]),
-        IconCategory(name: "Social & Communication", icons: [
+        IconCategory(name: "icon.social", icons: [
             "person.2.fill",
             "bubble.left.fill",
             "phone.fill",

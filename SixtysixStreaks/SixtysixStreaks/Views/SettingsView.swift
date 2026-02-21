@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
+    @Environment(LanguageManager.self) private var lang
     @AppStorage("appThemeMode") private var appThemeMode = "system"
     @AppStorage("cardViewStyle") private var cardViewStyle = "progressBar"
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = true
@@ -33,46 +34,54 @@ struct SettingsView: View {
 
                 List {
                     Section {
+                        languagePicker
+                    } header: {
+                        Text(lang.localized("settings.language"))
+                    } footer: {
+                        Text(lang.localized("settings.language_note"))
+                    }
+
+                    Section {
                         themePicker
                     } header: {
-                        Text("Appearance")
+                        Text(lang.localized("settings.appearance"))
                     }
 
                     Section {
                         homeLayoutPicker
                     } header: {
-                        Text("Streak View")
+                        Text(lang.localized("settings.streak_view"))
                     }
 
                     Section {
-                        legalRow(icon: "lock.shield.fill", title: "Privacy Policy") {
+                        legalRow(icon: "lock.shield.fill", title: lang.localized("settings.privacy_policy")) {
                             showPrivacy = true
                         }
-                        legalRow(icon: "doc.text.fill", title: "Terms of Service") {
+                        legalRow(icon: "doc.text.fill", title: lang.localized("settings.terms_of_service")) {
                             showTerms = true
                         }
                     } header: {
-                        Text("Legal")
+                        Text(lang.localized("settings.legal"))
                     }
 
                     Section {
                         HStack {
-                            Text("Version")
-                                .foregroundColor(colors.textPrimary)
+                            Text(lang.localized("settings.version"))
+                                .foregroundStyle(colors.textPrimary)
                             Spacer()
                             Text("1.0.0")
-                                .foregroundColor(colors.textSecondary)
+                                .foregroundStyle(colors.textSecondary)
                         }
                     } header: {
-                        Text("About")
+                        Text(lang.localized("settings.about"))
                     }
 
                     Section {
-                        settingsActionRow(icon: "trash.fill", title: "Erase All Data", color: AppTheme.dangerRed) {
+                        settingsActionRow(icon: "trash.fill", title: lang.localized("settings.erase_all_data"), color: AppTheme.dangerRed) {
                             showEraseAlert = true
                         }
                     } header: {
-                        Text("Data")
+                        Text(lang.localized("settings.data"))
                     }
 
                     #if DEBUG
@@ -96,34 +105,56 @@ struct SettingsView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Settings")
+            .navigationTitle(lang.localized("settings.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button(lang.localized("settings.done")) { dismiss() }
                 }
             }
             .sheet(isPresented: $showPrivacy) {
                 InAppWebView(
-                    title: "Privacy Policy",
+                    title: lang.localized("settings.privacy_policy"),
                     url: URL(string: "https://66-streaks.buraksahin.net/privacy/")!
                 )
             }
             .sheet(isPresented: $showTerms) {
                 InAppWebView(
-                    title: "Terms of Service",
+                    title: lang.localized("settings.terms_of_service"),
                     url: URL(string: "https://66-streaks.buraksahin.net/terms")!
                 )
             }
-            .alert("Erase All Data?", isPresented: $showEraseAlert) {
-                Button("Cancel", role: .cancel) {}
-                Button("Erase Everything", role: .destructive) {
+            .alert(lang.localized("settings.erase_alert_title"), isPresented: $showEraseAlert) {
+                Button(lang.localized("settings.cancel"), role: .cancel) {}
+                Button(lang.localized("settings.erase_everything"), role: .destructive) {
                     eraseAllData()
                 }
             } message: {
-                Text("This will permanently delete all habits and progress. This cannot be undone.")
+                Text(lang.localized("settings.erase_alert_message"))
             }
             .preferredColorScheme(resolvedColorScheme)
+        }
+    }
+
+    // MARK: - Language Picker
+    private var languagePicker: some View {
+        ForEach(LanguageManager.supportedLanguages, id: \.code) { language in
+            Button {
+                lang.currentLanguage = language.code
+            } label: {
+                HStack {
+                    Text(language.name)
+                        .foregroundStyle(colors.textPrimary)
+
+                    Spacer()
+
+                    if lang.currentLanguage == language.code {
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(AppTheme.accentBlue)
+                            .fontWeight(.semibold)
+                    }
+                }
+            }
         }
     }
 
@@ -135,17 +166,17 @@ struct SettingsView: View {
             } label: {
                 HStack {
                     Image(systemName: style.icon)
-                        .foregroundColor(AppTheme.accentBlue)
+                        .foregroundStyle(AppTheme.accentBlue)
                         .frame(width: 24)
 
-                    Text(style.label)
-                        .foregroundColor(colors.textPrimary)
+                    Text(style.localizedLabel)
+                        .foregroundStyle(colors.textPrimary)
 
                     Spacer()
 
                     if cardViewStyle == style.rawValue {
                         Image(systemName: "checkmark")
-                            .foregroundColor(AppTheme.accentBlue)
+                            .foregroundStyle(AppTheme.accentBlue)
                             .fontWeight(.semibold)
                     }
                 }
@@ -158,14 +189,14 @@ struct SettingsView: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: icon)
-                    .foregroundColor(AppTheme.accentBlue)
+                    .foregroundStyle(AppTheme.accentBlue)
                     .frame(width: 24)
                 Text(title)
-                    .foregroundColor(colors.textPrimary)
+                    .foregroundStyle(colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(colors.textSecondary)
+                    .foregroundStyle(colors.textSecondary)
             }
         }
     }
@@ -175,10 +206,10 @@ struct SettingsView: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 Image(systemName: icon)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                     .frame(width: 24)
                 Text(title)
-                    .foregroundColor(colors.textPrimary)
+                    .foregroundStyle(colors.textPrimary)
                 Spacer()
             }
         }
@@ -287,17 +318,17 @@ struct SettingsView: View {
             } label: {
                 HStack {
                     Image(systemName: option.icon)
-                        .foregroundColor(AppTheme.accentBlue)
+                        .foregroundStyle(AppTheme.accentBlue)
                         .frame(width: 24)
 
-                    Text(option.label)
-                        .foregroundColor(colors.textPrimary)
+                    Text(option.localizedLabel)
+                        .foregroundStyle(colors.textPrimary)
 
                     Spacer()
 
                     if appThemeMode == option.rawValue {
                         Image(systemName: "checkmark")
-                            .foregroundColor(AppTheme.accentBlue)
+                            .foregroundStyle(AppTheme.accentBlue)
                             .fontWeight(.semibold)
                     }
                 }
@@ -309,6 +340,7 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .modelContainer(for: Habit.self, inMemory: true)
+        .environment(LanguageManager.shared)
 }
 
 enum ThemeOption: String, CaseIterable {
@@ -316,11 +348,11 @@ enum ThemeOption: String, CaseIterable {
     case light
     case dark
 
-    var label: String {
+    var localizedLabel: String {
         switch self {
-        case .system: return "System Default"
-        case .light: return "Light Mode"
-        case .dark: return "Dark Mode"
+        case .system: return LanguageManager.shared.localized("theme.system_default")
+        case .light: return LanguageManager.shared.localized("theme.light_mode")
+        case .dark: return LanguageManager.shared.localized("theme.dark_mode")
         }
     }
 
