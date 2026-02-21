@@ -86,6 +86,9 @@ struct SettingsView: View {
                         settingsActionRow(icon: "arrow.counterclockwise", title: "Restart Onboarding", color: .purple) {
                             restartOnboarding()
                         }
+                        settingsActionRow(icon: "star.bubble", title: "Reset Review State", color: .yellow) {
+                            resetReviewState()
+                        }
                     } header: {
                         Text("Developer")
                     }
@@ -206,21 +209,16 @@ struct SettingsView: View {
                 reminderTime: reminderDate
             )
 
-            // Force the first habit to have a 66-day streak
-            let randomDays = (index == 0) ? 66 : Int.random(in: 8...40)
+            // Fixed streak days for testing: 6, 20, and 65
+            let streakDays = [6, 20, 65]
+            let randomDays = streakDays[index]
             
             let startDate = calendar.date(byAdding: .day, value: -randomDays, to: Date())!
             habit.startDate = calendar.startOfDay(for: startDate)
             habit.currentStreak = randomDays
             
-            // If it's the 66-day streak, set completion status
-            if randomDays >= 66 {
-                habit.habitStatus = .completed
-                habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
-            } else {
-                // Set lastCheckInDate to yesterday so they're NOT checked in today
-                habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
-            }
+            // Set lastCheckInDate to yesterday so they're NOT checked in today
+            habit.lastCheckInDate = calendar.date(byAdding: .day, value: -1, to: Date())
 
             var dates: [Date] = []
             for day in 0..<randomDays {
@@ -273,6 +271,12 @@ struct SettingsView: View {
     private func restartOnboarding() {
         hasCompletedOnboarding = false
         dismiss()
+    }
+
+    private func resetReviewState() {
+        ReviewManager.shared.resetState()
+        let impact = UIImpactFeedbackGenerator(style: .medium)
+        impact.impactOccurred()
     }
 
     // MARK: - Theme Picker

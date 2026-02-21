@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		028C5126F17ACD117CB16F3F /* StreakDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A0DC07485529D35C279C8 /* StreakDetailView.swift */; };
+		07E714B6045316F0773F968A /* appstore.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6B243C3AC82DA41B8806CF /* appstore.png */; };
 		0F7F6676E9B9F74E2699A9FE /* CreateHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806A8A42DEA57F4ECECBF3B1 /* CreateHabitView.swift */; };
 		14538AAF872ADA7EF8822A45 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273728020E46FA9C72544BB0 /* AppTheme.swift */; };
 		40003571821BAD08FD613E96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EDDFCF7AB4BB07471A4E627 /* Assets.xcassets */; };
@@ -17,23 +18,28 @@
 		86D0C19A5D4E35489CF7CC61 /* StreakGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF17D67ECE13CEDFB4929D3 /* StreakGridView.swift */; };
 		ACA14FBD529273BE2BFD0991 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D610BC055527A25FCC9935 /* SettingsView.swift */; };
 		B721717699F1B8E2852C922D /* InAppWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB7D5BB2FE6E691E4BF0DC /* InAppWebView.swift */; };
+		BA011ABE99254C6F5F0EBDC9 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098DC881B49F9F31103F7D9C /* ReviewManager.swift */; };
 		BA70A914B5D42172444DFD6D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD515BEDE601A7F9D9692540 /* HomeView.swift */; };
 		C0186C24BD9C33ACEC1FB2AF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6A94B302F5CB3AFF6BDC4E /* OnboardingView.swift */; };
 		D5AE397A5CAE233DDF11D015 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401CEA19CCB0CDFEDF34F996 /* Habit.swift */; };
+		E29BCA5E515B4A966EBFF60A /* 66 streaks logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A108043EF27AAB6DE3849AD4 /* 66 streaks logo.png */; };
 		FA4B6E6B526508F899C54D8C /* HabitCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8CAC2FCD6580959B954F67 /* HabitCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		098DC881B49F9F31103F7D9C /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
 		18DB7D5BB2FE6E691E4BF0DC /* InAppWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppWebView.swift; sourceTree = "<group>"; };
 		1EDDFCF7AB4BB07471A4E627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		273728020E46FA9C72544BB0 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
 		3BF17D67ECE13CEDFB4929D3 /* StreakGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakGridView.swift; sourceTree = "<group>"; };
 		401CEA19CCB0CDFEDF34F996 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
-		657D569260A42E9B5C7B91B7 /* SixtysixStreaks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SixtysixStreaks.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6727A9172F420E23006AE37C /* SixtysixStreaks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SixtysixStreaks.entitlements; sourceTree = "<group>"; };
+		4B6B243C3AC82DA41B8806CF /* appstore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appstore.png; sourceTree = "<group>"; };
+		657D569260A42E9B5C7B91B7 /* SixtysixStreaks.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SixtysixStreaks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		806A8A42DEA57F4ECECBF3B1 /* CreateHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabitView.swift; sourceTree = "<group>"; };
 		85D610BC055527A25FCC9935 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A108043EF27AAB6DE3849AD4 /* 66 streaks logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "66 streaks logo.png"; sourceTree = "<group>"; };
 		A11A0DC07485529D35C279C8 /* StreakDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakDetailView.swift; sourceTree = "<group>"; };
+		AF60D5FA6B455CF8CCBD12B9 /* SixtysixStreaks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SixtysixStreaks.entitlements; sourceTree = "<group>"; };
 		AF6A94B302F5CB3AFF6BDC4E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		BD515BEDE601A7F9D9692540 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C14D7D88FDD89A3CA95929C7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,8 +91,10 @@
 		B263BECBE871836B6A85D5B7 /* SixtysixStreaks */ = {
 			isa = PBXGroup;
 			children = (
-				6727A9172F420E23006AE37C /* SixtysixStreaks.entitlements */,
+				A108043EF27AAB6DE3849AD4 /* 66 streaks logo.png */,
+				4B6B243C3AC82DA41B8806CF /* appstore.png */,
 				1EDDFCF7AB4BB07471A4E627 /* Assets.xcassets */,
+				AF60D5FA6B455CF8CCBD12B9 /* SixtysixStreaks.entitlements */,
 				C71D3EAC16A5B5AE7E8D1000 /* App */,
 				C302F54BF0E5CC6E4CBE8EAE /* Managers */,
 				5962FFDF5F08898982D4FF14 /* Models */,
@@ -108,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				F144D637E235B21785603BE6 /* NotificationManager.swift */,
+				098DC881B49F9F31103F7D9C /* ReviewManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -161,6 +170,7 @@
 			);
 			mainGroup = B57FC16069B00FFBFE3E111F;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -174,7 +184,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E29BCA5E515B4A966EBFF60A /* 66 streaks logo.png in Resources */,
 				40003571821BAD08FD613E96 /* Assets.xcassets in Resources */,
+				07E714B6045316F0773F968A /* appstore.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +206,7 @@
 				B721717699F1B8E2852C922D /* InAppWebView.swift in Sources */,
 				4E37B98ED241557631EA4EA2 /* NotificationManager.swift in Sources */,
 				C0186C24BD9C33ACEC1FB2AF /* OnboardingView.swift in Sources */,
+				BA011ABE99254C6F5F0EBDC9 /* ReviewManager.swift in Sources */,
 				ACA14FBD529273BE2BFD0991 /* SettingsView.swift in Sources */,
 				66C55CC3CDDFC3EC5DD049FB /* SixtysixStreaksApp.swift in Sources */,
 				028C5126F17ACD117CB16F3F /* StreakDetailView.swift in Sources */,
@@ -255,7 +268,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "66 Streaks";
+				INFOPLIST_KEY_CFBundleDisplayName = "66-Day Streak";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -274,13 +287,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = SixtysixStreaksIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SixtysixStreaks/SixtysixStreaks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 56YC665674;
+				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "66-Day Streak";
-				INFOPLIST_KEY_CFBundleIconName = SixtysixStreaksIcon;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -292,13 +302,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.buraksh.sixtysixstreaks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sixtysixstreaks.app;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -307,13 +313,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = SixtysixStreaksIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SixtysixStreaks/SixtysixStreaks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 56YC665674;
+				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "66-Day Streak";
-				INFOPLIST_KEY_CFBundleIconName = SixtysixStreaksIcon;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -325,13 +328,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.buraksh.sixtysixstreaks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sixtysixstreaks.app;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -380,7 +379,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "66 Streaks";
+				INFOPLIST_KEY_CFBundleDisplayName = "66-Day Streak";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

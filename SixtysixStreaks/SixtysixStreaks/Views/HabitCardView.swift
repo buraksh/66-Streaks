@@ -125,6 +125,7 @@ struct HabitCardView: View {
                 } else {
                     habit.checkIn()
                     NotificationManager.shared.scheduleReminder(for: habit)
+                    ReviewManager.shared.requestReviewIfAppropriate(for: habit)
                     triggerAnimation()
                     onCheckInChange?()
                 }
