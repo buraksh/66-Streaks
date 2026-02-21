@@ -4,6 +4,7 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(LanguageManager.self) private var lang
     @Query(sort: \Habit.startDate, order: .forward) private var habits: [Habit]
     @State private var showCreateHabit = false
@@ -65,6 +66,11 @@ struct HomeView: View {
         }
         .onAppear {
             validateAllStreaks()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                validateAllStreaks()
+            }
         }
     }
 

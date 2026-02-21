@@ -5,6 +5,7 @@ import SwiftData
 struct SixtyixStreaksApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("appThemeMode") private var appThemeMode = "system"
+    @Environment(\.scenePhase) private var scenePhase
     @State private var languageManager = LanguageManager.shared
 
     init() {
@@ -19,6 +20,11 @@ struct SixtyixStreaksApp: App {
                 .preferredColorScheme(colorScheme)
         }
         .modelContainer(for: Habit.self)
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                NotificationCenter.default.post(name: .appDidBecomeActive, object: nil)
+            }
+        }
     }
 
     private var colorScheme: ColorScheme? {
@@ -28,4 +34,8 @@ struct SixtyixStreaksApp: App {
         default: return nil
         }
     }
+}
+
+extension Notification.Name {
+    static let appDidBecomeActive = Notification.Name("appDidBecomeActive")
 }
